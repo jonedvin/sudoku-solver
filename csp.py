@@ -29,11 +29,14 @@ def select_in_order(board: Board) -> tuple:
 def select_most_constrained(board: Board) -> tuple:
     most_constrained = (0, 0, 0)
 
+    row_constraints = board.get_row_constraints()
+    col_constraints = board.get_col_constraints()
+
     for i, row in enumerate(board):
         for j, col in enumerate(row):
             if col == " ":
 
-                constraints_number = board.get_number_of_constraints(i, j)
+                constraints_number = row_constraints[i] + col_constraints[j] + board.get_block_constraints(i, j)
                 if constraints_number > most_constrained[2]:
                     most_constrained = (i, j, constraints_number)
 

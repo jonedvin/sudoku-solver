@@ -4,7 +4,7 @@ from csp import recursive_backtracking, select_in_order, select_most_constrained
 
 
 MAX_SOLUTIONS = 5
-BOARD = "multi"
+BOARD = "extreme"
 
 
 if __name__ == "__main__":

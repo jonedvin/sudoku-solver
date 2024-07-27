@@ -51,24 +51,6 @@ class Board(list):
     def remove_value(self, i: int, j: int):
         self[i] = f"{self[i][:j]} {self[i][j+1:]}"
 
-    def get_number_of_constraints(self, i: int, j: int):
-        count = 0
-
-        for row in self:
-            if row[j] != " ":
-                count += 1
-
-        for space in self[i]:
-            if space != " ":
-                count += 1
-
-        for row_offset in self.get_offset_for_group(i):
-            for col_offset in self.get_offset_for_group(j):
-                if self[i+row_offset][j+col_offset] != " ":
-                    count += 1
-
-        return count
-
     def is_value_constraint_consistent(self, i: int, j: int, value: str):
         for row in self:
             if row[j] == value:
@@ -92,6 +74,20 @@ class Board(list):
             return (-1, 1)
         elif row_col in (2, 5, 8):
             return (-2, -1)
+
+    def get_row_constraints(self) -> list:
+        return [sum([0 if space == " " else 1 for space in row]) for row in self]
+
+    def get_col_constraints(self) -> list:
+        return [sum(0 if self[i][j] == " " else 1 for i in range(9)) for j in range(9)]
+
+    def get_block_constraints(self, i: int, j: int) -> list:
+        count = 0
+        for row_offset in self.get_offset_for_group(i):
+            for col_offset in self.get_offset_for_group(j):
+                if self[i+row_offset][j+col_offset] != " ":
+                    count += 1
+        return count
 
     def print(self) -> None:
         print(",-----,-----,-----,")
